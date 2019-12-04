@@ -10,13 +10,13 @@ import { HashRouter,Route } from 'react-router-dom';
 // import { HashRouter } from 'react-router-dom'
 import Home from './home/App'
 import List from './list/List'
-//import Detail from './detail/Detail'
+import Detail from './detail/Detail'
 
 ReactDOM.render(
   <HashRouter>
     <Route exact path='/' component={Home}/>
     <Route exact path='/list' component={List}/>
-    {/* <Route exact path='/list/:id' component={Detail}/> */}
+    <Route exact path='/list/:id' component={Detail}/>
   </HashRouter>
 , document.getElementById('root'));
 

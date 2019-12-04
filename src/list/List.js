@@ -141,6 +141,10 @@ class List extends React.Component {
     });
   };
 
+  handleOperate = (id) =>{
+    this.props.history.push({pathname:'/list/'+ id})
+  }
+
   render() {
     const columns = [
       {
@@ -166,7 +170,7 @@ class List extends React.Component {
       {
         title: '操作',
         key: 'operate',
-        render: (record) => <div><Button onClick={()=>{this.handleDelete(record.id,record.name)}} type="danger">删除</Button> <Button type="ghost">编辑</Button></div>
+        render: (record) => <div><Button onClick={()=>{this.handleDelete(record.id,record.name)}} type="danger">删除</Button> <Button type="ghost" onClick={()=>{this.handleOperate(record.id)}}>编辑</Button></div>
       },
     ];
     return (
@@ -174,7 +178,7 @@ class List extends React.Component {
       <Table columns={columns}
         loading={this.state.loading}
         dataSource={this.state.data}
-        title={() => <Button style={{ float: 'right' }} type="primary">新增</Button>}
+        title={() => <Button style={{ float: 'right' }} type="primary" onClick={()=>{this.handleOperate(0)}}>新增</Button>}
       />
       <Modal
           title="删除商品"

@@ -4,8 +4,10 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "ali-oss": "^6.2.1",
     "antd": "^3.25.2",
     "hydrogen-js-sdk": "^2.2.2",
+    "qiniu": "^7.2.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-highlight-words": "^0.16.0",
@@ -36,6 +38,7 @@
   "devDependencies": {
     "babel-plugin-import": "^1.12.2",
     "customize-cra": "^0.9.1",
+    "gh-pages": "^2.1.1",
     "react-app-rewired": "^2.1.5"
   }
 }
