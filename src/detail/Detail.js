@@ -3,6 +3,9 @@ import { Form, Input, Upload, Icon, Modal, Button, Alert, message } from 'antd';
 import Bmob from "hydrogen-js-sdk";
 Bmob.initialize("57b561f7d48f3c2e", "191019");
 
+const CLOUDINARY_UPLOAD_PRESET = 'timidgy3';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dw2xr1cio/image/upload';
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -89,18 +92,46 @@ class Detail extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ file, fileList }) => {
+    
+    if (file.status == "done") { // 上传成功后
+    
+      const fileList = this.state.fileList
+      fileList.pop();
+      fileList.push({
+          uid: file.uid,
+          name: file.name,
+          state: 'done',
+          url: file.response.secure_url
+        })
+    }
+    this.setState({fileList})
+  }
 
-  handleChangeIntro = ({ fileList }) => this.setState({ introList: fileList });
+  handleChangeIntro = ({ file, fileList }) => {
+    var introList = fileList
+    if (file.status == "done") { // 上传成功后
+    
+      introList = this.state.introList
+      introList.pop();
+      introList.push({
+          uid: file.uid,
+          name: file.name,
+          state: 'done',
+          url: file.response.secure_url
+        })
+    }
+    this.setState({ introList });
+  }
 
   handleImg(file) {
     var data = ''
 
     for (let i = 0; i < file.length; i++) {
       if (i == file.length - 1) {
-        data += (file[i].thumbUrl)
+        data += (file[i].url)
       } else {
-        data += (file[i].thumbUrl + '||')
+        data += (file[i].url + '||')
       }
     }
     return data;
@@ -167,8 +198,7 @@ class Detail extends React.Component {
         uid: i,
         name: `image${i}`,
         state: 'done',
-        url: data.split('||')[i],
-        thumbUrl: data.split('||')[i]
+        url: data.split('||')[i]
       })
     }
     return file;
@@ -231,8 +261,19 @@ class Detail extends React.Component {
     }));
   };
 
+  postData(file) {
+    return {
+      'upload_preset': CLOUDINARY_UPLOAD_PRESET,
+      'file': file[0]
+    }
+  }
+
+  goHome(){
+    this.props.history.push({pathname:'/list/'})
+  }
+
   render() {
-    const { previewVisible, previewImage, fileList, introList, name, price, fields } = this.state;
+    const { previewVisible, previewImage, fileList, introList, fields } = this.state;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -241,10 +282,11 @@ class Detail extends React.Component {
     );
     return (
       <div style={{ 'width': '75%', 'margin': '50px auto' }}>
+        <Button style={{ float: 'right' }} type="primary" onClick={this.goHome.bind(this)}>返回</Button>
         <Alert
           style={{ 'width': '50%' }}
           message="提醒："
-          description="经过测试：图片上传大小为：500X500 最佳"
+          description="经过测试：1、图片上传大小为：500X500 最佳，且大小不宜超过 200k，否则影响加载速度"
           type="warning"
           showIcon
         />
@@ -253,15 +295,16 @@ class Detail extends React.Component {
         <label>价格：</label> <Input placeholder="商品价格" defaultValue={price} allowClear ref="price" style={{ 'width': '50%', 'marginBottom': '30px' }} /> <br /> */}
         <CustomizedForm {...fields} onChange={this.handleFormChange} />
         <div className="clearfix">
-          <label style={{ 'marginBottom': '15px' }}>轮播图(<font style={{ 'color': 'red' }}>最多只能3张</font>)：</label>
+          <label style={{ 'marginBottom': '15px' }}>轮播图(<font style={{ 'color': 'red' }}>最多只能5张</font>)：</label>
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            action={CLOUDINARY_UPLOAD_URL}
+            data={(fileList) => this.postData(fileList)}
             listType="picture-card"
             fileList={fileList}
             onPreview={this.handlePreview}
             onChange={this.handleChange}
           >
-            {fileList.length >= 3 ? null : uploadButton}
+            {fileList.length >= 5 ? null : uploadButton}
           </Upload>
           <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
             <img alt="example" style={{ width: '100%' }} src={previewImage} />
@@ -269,15 +312,16 @@ class Detail extends React.Component {
         </div>
 
         <div className="clearfix">
-          <label style={{ 'marginBottom': '15px' }}>商品详情图(<font style={{ 'color': 'red' }}>最多只能3张</font>)：</label>
+          <label style={{ 'marginBottom': '15px' }}>商品详情图(<font style={{ 'color': 'red' }}>最多只能5张</font>)：</label>
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            action={CLOUDINARY_UPLOAD_URL}
+            data={(fileList) => this.postData(fileList)}
             listType="picture-card"
             fileList={introList}
             onPreview={this.handlePreview}
             onChange={this.handleChangeIntro}
           >
-            {introList.length >= 3 ? null : uploadButton}
+            {introList.length >= 5 ? null : uploadButton}
           </Upload>
           <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
             <img alt="example" style={{ width: '100%' }} src={previewImage} />
