@@ -95,7 +95,7 @@ class Detail extends React.Component {
   handleChange = ({ file, fileList }) => {
     
     if (file.status == "done") { // 上传成功后
-    
+   
       const fileList = this.state.fileList
       fileList.pop();
       fileList.push({
@@ -291,8 +291,7 @@ class Detail extends React.Component {
           showIcon
         />
         <br /><br />
-        {/* <label>名称：</label> <Input placeholder="商品名称" value={name} allowClear ref="name" style={{ 'width': '50%', 'marginBottom': '30px' }} /> <br />
-        <label>价格：</label> <Input placeholder="商品价格" defaultValue={price} allowClear ref="price" style={{ 'width': '50%', 'marginBottom': '30px' }} /> <br /> */}
+        
         <CustomizedForm {...fields} onChange={this.handleFormChange} />
         <div className="clearfix">
           <label style={{ 'marginBottom': '15px' }}>轮播图(<font style={{ 'color': 'red' }}>最多只能5张</font>)：</label>
