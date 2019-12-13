@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Input, Upload, Icon, Modal, Button, Alert, message } from 'antd';
 import Bmob from "hydrogen-js-sdk";
-Bmob.initialize("57b561f7d48f3c2e", "191019");
+Bmob.initialize("Secret Key", "API安全码");
 
 const CLOUDINARY_UPLOAD_PRESET = 'timidgy3';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dw2xr1cio/image/upload';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/YOUR-Cloud-name/image/upload';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
