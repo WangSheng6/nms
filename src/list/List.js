@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Input, Button, Icon, Modal, message } from 'antd';
 import Highlighter from 'react-highlight-words';
 import Bmob from "hydrogen-js-sdk";
-Bmob.initialize("57b561f7d48f3c2e", "191019");
+Bmob.initialize("Secret Key", "API安全码");
 var query = Bmob.Query("wine");
 var dataArr = [];
 
